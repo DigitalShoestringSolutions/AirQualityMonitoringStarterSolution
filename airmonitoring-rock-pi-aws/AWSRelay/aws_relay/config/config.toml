@@ -1,0 +1,41 @@
+# INSTRUCTIONS
+# - set mqtt subscriber details to the broker of the solution
+# - set the subscriber topic
+# - update the remote prefix for the default mapping as required
+# - add additional mappings if needed
+
+# TOPIC MAPPING:
+# The table below explains the effect of different arrangements of mapping parameters
+# | Pattern           | Local Prefix       | Remote Prefix      | Effect:
+# |===================|====================|====================|=====================================
+# | pattern           | L/                 | R/                 | L/pattern -> R/pattern
+# | pattern           | L/                 | "" or not present  | L/pattern -> pattern
+# | pattern           | "" or not present  | R/                 | pattern -> R/pattern
+# | pattern           | "" or not present  | "" or not present  | (no change)
+# | "" or not present | local              | remote             | local -> remote
+
+[mqtt_subsciber]
+    broker = "172.18.0.4"  #point to the mqtt broker
+    port = 1883
+
+[[mqtt_subsciber.subscription]]
+    topic="voc/#"    #the mqtt topic shoestring mqtt broker uses
+
+#[[mqtt_subsciber.subscription]]
+#    topic="other/topic"
+
+[[mapper.topic]]
+    pattern = "#" #accepts wildcards: '+' for single level and '#' for anything thereafter
+#    local_prefix = "local/prefix"
+    remote_prefix = "IFM/companyname"  #modify this to your company name
+
+[aws]
+    endpoint = "a2l3jb7dpjh66r-ats.iot.eu-west-1.amazonaws.com"
+    port = 8883   #common mqtt ports are 1883 and 8883
+
+    cert_path = "certs/certificate.pem.crt"
+    private_key_path = "certs/private.pem.key"
+    ca_path = "certs/AmazonRootCA1.pem"
+	
+	#AWS doesn't like underscores in the client_id - it will silently ignore
+    client_id = "companyname"  #your client id, avoid underscore
