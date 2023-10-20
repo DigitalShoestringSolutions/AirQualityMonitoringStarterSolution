@@ -23,6 +23,8 @@
 
 #from adc.DFRobot_ENS160 import *
 import logging
+import time
+import importlib
 
 logger = logging.getLogger("main.ens160.conversion")
 
@@ -31,11 +33,22 @@ logger = logging.getLogger("main.ens160.conversion")
 class ADC:
     def __init__(self, config):
         if config['computing']['hardware'] == "Pi4":
-            from adc.DFRobot_ENS160 import *
-            self.adc = DFRobot_ENS160_I2C(i2c_addr = 0x53, bus = 1)
+            # get correct sensor module
+            try:
+                sensor = importlib.import_module('adc.DFRobot_ENS160')
+                logger.info("Imported DFRobot_ENS160")
+            except ModuleNotFoundError as e:
+                logger.error(f"Unable to import module DFRobot_ENS160. Stopping!!")
+                return
+            self.adc = sensor.DFRobot_ENS160_I2C(i2c_addr = 0x53, bus = 1)
         else:
-            from adc.DFRobot_ENS160_ROCK import *
-            self.adc = DFRobot_ENS160_I2C(i2c_addr = 0x53, bus = 7)
+            try:
+                sensor = importlib.import_module('adc.DFRobot_ENS160_ROCK')
+                logger.info("Imported DFRobot_ENS160_ROCK")
+            except ModuleNotFoundError as e:
+                logger.error(f"Unable to import module DFRobot_ENS160_ROCK. Stopping!!")
+                return
+            self.adc = sensor.DFRobot_ENS160_I2C(i2c_addr = 0x53, bus = 7)
         
              
         while (self.adc.begin() == False):
@@ -50,7 +63,7 @@ class ADC:
             #   ENS160_IDLE_MODE: IDLE mode (low-power)
             #   ENS160_STANDARD_MODE: STANDARD Gas Sensing Modes
         '''
-        self.adc.set_PWR_mode(ENS160_STANDARD_MODE)
+        self.adc.set_PWR_mode(sensor.ENS160_STANDARD_MODE)
 
         '''
             # Users write ambient temperature and relative humidity into ENS160 for calibration and compensation of the measured gas data.
@@ -58,7 +71,7 @@ class ADC:
             # relative_humidity Compensate the current ambient humidity, float type, unit: %rH
         '''
         self.adc.set_temp_and_hum(ambient_temp=25.00, relative_humidity=50.00)
-        
+        logger.info("ens160 sensor initialize successfully!!!")
 
     def sample(self):
         data = Data()
