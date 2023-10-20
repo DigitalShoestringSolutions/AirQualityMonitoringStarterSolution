@@ -31,5 +31,6 @@ ADD ./code/ /app
 
 WORKDIR /app/adc/pyRock
 RUN yes | python3 setup.py install
+WORKDIR /app
 
 CMD [ "python3", "/app/main.py"]

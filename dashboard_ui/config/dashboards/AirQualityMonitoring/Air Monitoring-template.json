@@ -24,24 +24,22 @@
   "editable": true,
   "fiscalYearStartMonth": 0,
   "graphTooltip": 0,
-  "id": 1,
+  "id": 4,
   "links": [],
   "liveNow": false,
   "panels": [
     {
       "datasource": {
         "type": "influxdb",
-        "uid": "7dUnbMigk"
+        "uid": "influxdb"
       },
       "fieldConfig": {
         "defaults": {
           "color": {
             "mode": "thresholds"
           },
-          "decimals": 0,
-          "displayName": "[0 - 2000ppb]",
           "mappings": [],
-          "max": 2000,
+          "max": 1500,
           "min": 0,
           "thresholds": {
             "mode": "absolute",
@@ -51,34 +49,34 @@
                 "value": null
               },
               {
+                "color": "dark-green",
+                "value": 0
+              },
+              {
                 "color": "yellow",
                 "value": 50
               },
               {
-                "color": "orange",
+                "color": "red",
                 "value": 750
               },
               {
-                "color": "red",
+                "color": "semi-dark-red",
                 "value": 1500
-              },
-              {
-                "color": "dark-red",
-                "value": 2000
               }
             ]
           },
-          "unit": "ppb"
+          "unit": "conppb"
         },
         "overrides": []
       },
       "gridPos": {
-        "h": 6,
-        "w": 5,
+        "h": 9,
+        "w": 6,
         "x": 0,
         "y": 0
       },
-      "id": 2,
+      "id": 10,
       "options": {
         "orientation": "auto",
         "reduceOptions": {
@@ -89,50 +87,17 @@
           "values": false
         },
         "showThresholdLabels": true,
-        "showThresholdMarkers": true,
-        "text": {}
+        "showThresholdMarkers": true
       },
-      "pluginVersion": "9.3.6",
+      "pluginVersion": "9.4.7",
       "targets": [
         {
           "datasource": {
             "type": "influxdb",
-            "uid": "7dUnbMigk"
+            "uid": "influxdb"
           },
-          "groupBy": [
-            {
-              "params": [
-                "$__interval"
-              ],
-              "type": "time"
-            },
-            {
-              "params": [
-                "null"
-              ],
-              "type": "fill"
-            }
-          ],
-          "measurement": "vocTable",
-          "orderByTime": "ASC",
-          "policy": "default",
-          "refId": "A",
-          "resultFormat": "time_series",
-          "select": [
-            [
-              {
-                "params": [
-                  "VOC"
-                ],
-                "type": "field"
-              },
-              {
-                "params": [],
-                "type": "mean"
-              }
-            ]
-          ],
-          "tags": []
+          "query": "from(bucket: \"airquality_monitoring\")\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\n  |> filter(fn: (r) => r[\"_measurement\"] == \"airquality_monitoring\")\n  |> filter(fn: (r) => r[\"_field\"] == \"tvoc\")\n  |> filter(fn: (r) => r[\"machine\"] == \"Machine_1\")\n  |> aggregateWindow(every: v.windowPeriod, fn: last, createEmpty: false)\n  |> yield(name: \"last\")",
+          "refId": "A"
         }
       ],
       "title": "VOC",
@@ -141,7 +106,7 @@
     {
       "datasource": {
         "type": "influxdb",
-        "uid": "7dUnbMigk"
+        "uid": "influxdb"
       },
       "fieldConfig": {
         "defaults": {
@@ -179,7 +144,8 @@
             }
           },
           "mappings": [],
-          "max": 2000,
+          "max": 6000,
+          "min": 0,
           "thresholds": {
             "mode": "absolute",
             "steps": [
@@ -189,34 +155,21 @@
               },
               {
                 "color": "red",
-                "value": 10
+                "value": 80
               }
             ]
           },
-          "unit": "conppb"
+          "unit": "ppm"
         },
-        "overrides": [
-          {
-            "matcher": {
-              "id": "byName",
-              "options": "vocTable.VOC"
-            },
-            "properties": [
-              {
-                "id": "displayName",
-                "value": "VOC Value"
-              }
-            ]
-          }
-        ]
+        "overrides": []
       },
       "gridPos": {
-        "h": 6,
-        "w": 9,
-        "x": 5,
+        "h": 9,
+        "w": 12,
+        "x": 6,
         "y": 0
       },
-      "id": 11,
+      "id": 2,
       "options": {
         "legend": {
           "calcs": [],
@@ -233,48 +186,10 @@
         {
           "datasource": {
             "type": "influxdb",
-            "uid": "7dUnbMigk"
+            "uid": "influxdb"
           },
-          "groupBy": [
-            {
-              "params": [
-                "$__interval"
-              ],
-              "type": "time"
-            },
-            {
-              "params": [
-                "null"
-              ],
-              "type": "fill"
-            }
-          ],
-          "measurement": "vocTable",
-          "orderByTime": "ASC",
-          "policy": "default",
-          "refId": "A",
-          "resultFormat": "time_series",
-          "select": [
-            [
-              {
-                "params": [
-                  "VOC"
-                ],
-                "type": "field"
-              },
-              {
-                "params": [],
-                "type": "mean"
-              },
-              {
-                "params": [
-                  "VOC"
-                ],
-                "type": "alias"
-              }
-            ]
-          ],
-          "tags": []
+          "query": "from(bucket: \"airquality_monitoring\")\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\n  |> filter(fn: (r) => r[\"_measurement\"] == \"airquality_monitoring\")\n  |> filter(fn: (r) => r[\"_field\"] == \"tvoc\")\n  |> filter(fn: (r) => r[\"machine\"] == \"Machine_1\")\n  |> aggregateWindow(every: v.windowPeriod, fn: last, createEmpty: false)\n  |> yield(name: \"last\")",
+          "refId": "A"
         }
       ],
       "title": "VOC History",
@@ -283,133 +198,15 @@
     {
       "datasource": {
         "type": "influxdb",
-        "uid": "7dUnbMigk"
+        "uid": "influxdb"
       },
       "fieldConfig": {
         "defaults": {
           "color": {
             "mode": "thresholds"
           },
-          "mappings": [
-            {
-              "options": {
-                "from": 0,
-                "result": {
-                  "color": "green",
-                  "index": 0,
-                  "text": "OK"
-                },
-                "to": 750
-              },
-              "type": "range"
-            },
-            {
-              "options": {
-                "from": 750,
-                "result": {
-                  "color": "dark-red",
-                  "index": 1,
-                  "text": "NOT OK!"
-                },
-                "to": 100000
-              },
-              "type": "range"
-            }
-          ],
-          "thresholds": {
-            "mode": "absolute",
-            "steps": [
-              {
-                "color": "green",
-                "value": null
-              }
-            ]
-          }
-        },
-        "overrides": []
-      },
-      "gridPos": {
-        "h": 6,
-        "w": 3,
-        "x": 14,
-        "y": 0
-      },
-      "id": 15,
-      "options": {
-        "colorMode": "value",
-        "graphMode": "none",
-        "justifyMode": "center",
-        "orientation": "auto",
-        "reduceOptions": {
-          "calcs": [
-            "lastNotNull"
-          ],
-          "fields": "/^vocTable\\.mean$/",
-          "values": false
-        },
-        "textMode": "value"
-      },
-      "pluginVersion": "9.3.6",
-      "targets": [
-        {
-          "datasource": {
-            "type": "influxdb",
-            "uid": "7dUnbMigk"
-          },
-          "groupBy": [
-            {
-              "params": [
-                "$__interval"
-              ],
-              "type": "time"
-            },
-            {
-              "params": [
-                "null"
-              ],
-              "type": "fill"
-            }
-          ],
-          "measurement": "vocTable",
-          "orderByTime": "ASC",
-          "policy": "default",
-          "refId": "A",
-          "resultFormat": "time_series",
-          "select": [
-            [
-              {
-                "params": [
-                  "VOC"
-                ],
-                "type": "field"
-              },
-              {
-                "params": [],
-                "type": "mean"
-              }
-            ]
-          ],
-          "tags": []
-        }
-      ],
-      "title": "VOC Alert",
-      "type": "stat"
-    },
-    {
-      "datasource": {
-        "type": "influxdb",
-        "uid": "7dUnbMigk"
-      },
-      "description": "",
-      "fieldConfig": {
-        "defaults": {
-          "color": {
-            "mode": "thresholds"
-          },
-          "decimals": 2,
-          "displayName": "[0 - 2000ppm]",
           "mappings": [],
-          "max": 2000,
+          "max": 1500,
           "min": 0,
           "thresholds": {
             "mode": "absolute",
@@ -419,8 +216,8 @@
                 "value": null
               },
               {
-                "color": "semi-dark-green",
-                "value": 500
+                "color": "green",
+                "value": 600
               },
               {
                 "color": "yellow",
@@ -431,12 +228,8 @@
                 "value": 1000
               },
               {
-                "color": "red",
+                "color": "semi-dark-red",
                 "value": 1500
-              },
-              {
-                "color": "dark-red",
-                "value": 2000
               }
             ]
           },
@@ -445,12 +238,12 @@
         "overrides": []
       },
       "gridPos": {
-        "h": 6,
-        "w": 5,
+        "h": 8,
+        "w": 6,
         "x": 0,
-        "y": 6
+        "y": 9
       },
-      "id": 4,
+      "id": 9,
       "options": {
         "orientation": "auto",
         "reduceOptions": {
@@ -461,50 +254,17 @@
           "values": false
         },
         "showThresholdLabels": true,
-        "showThresholdMarkers": true,
-        "text": {}
+        "showThresholdMarkers": true
       },
-      "pluginVersion": "9.3.6",
+      "pluginVersion": "9.4.7",
       "targets": [
         {
           "datasource": {
             "type": "influxdb",
-            "uid": "7dUnbMigk"
+            "uid": "influxdb"
           },
-          "groupBy": [
-            {
-              "params": [
-                "$__interval"
-              ],
-              "type": "time"
-            },
-            {
-              "params": [
-                "null"
-              ],
-              "type": "fill"
-            }
-          ],
-          "measurement": "vocTable",
-          "orderByTime": "ASC",
-          "policy": "default",
-          "refId": "A",
-          "resultFormat": "time_series",
-          "select": [
-            [
-              {
-                "params": [
-                  "CO2"
-                ],
-                "type": "field"
-              },
-              {
-                "params": [],
-                "type": "mean"
-              }
-            ]
-          ],
-          "tags": []
+          "query": "from(bucket: \"airquality_monitoring\")\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\n  |> filter(fn: (r) => r[\"_measurement\"] == \"airquality_monitoring\")\n  |> filter(fn: (r) => r[\"_field\"] == \"ppm\")\n  |> filter(fn: (r) => r[\"machine\"] == \"Machine_1\")\n  |> aggregateWindow(every: v.windowPeriod, fn: last, createEmpty: false)\n  |> yield(name: \"last\")",
+          "refId": "A"
         }
       ],
       "title": "CO2",
@@ -513,9 +273,8 @@
     {
       "datasource": {
         "type": "influxdb",
-        "uid": "7dUnbMigk"
+        "uid": "influxdb"
       },
-      "description": "",
       "fieldConfig": {
         "defaults": {
           "color": {
@@ -527,7 +286,7 @@
             "axisLabel": "",
             "axisPlacement": "auto",
             "barAlignment": 0,
-            "drawStyle": "bars",
+            "drawStyle": "line",
             "fillOpacity": 0,
             "gradientMode": "none",
             "hideFrom": {
@@ -552,7 +311,7 @@
             }
           },
           "mappings": [],
-          "max": 2000,
+          "max": 21500,
           "min": 0,
           "thresholds": {
             "mode": "absolute",
@@ -560,47 +319,191 @@
               {
                 "color": "green",
                 "value": null
-              }
-            ]
-          },
-          "unit": "ppm"
-        },
-        "overrides": [
-          {
-            "matcher": {
-              "id": "byFrameRefID",
-              "options": "B"
-            },
-            "properties": [
-              {
-                "id": "unit",
-                "value": "ppm"
               },
               {
-                "id": "custom.drawStyle",
-                "value": "line"
+                "color": "red",
+                "value": 80
               }
             ]
           },
-          {
-            "matcher": {
-              "id": "byName",
-              "options": "vocTable.CO2"
-            },
-            "properties": [
+          "unit": "conppb"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 8,
+        "w": 12,
+        "x": 6,
+        "y": 9
+      },
+      "id": 4,
+      "options": {
+        "legend": {
+          "calcs": [],
+          "displayMode": "list",
+          "placement": "bottom",
+          "showLegend": true
+        },
+        "tooltip": {
+          "mode": "single",
+          "sort": "none"
+        }
+      },
+      "targets": [
+        {
+          "datasource": {
+            "type": "influxdb",
+            "uid": "influxdb"
+          },
+          "query": "from(bucket: \"airquality_monitoring\")\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\n  |> filter(fn: (r) => r[\"_measurement\"] == \"airquality_monitoring\")\n  |> filter(fn: (r) => r[\"_field\"] == \"ppm\")\n  |> filter(fn: (r) => r[\"machine\"] == \"Machine_1\")\n  |> aggregateWindow(every: v.windowPeriod, fn: last, createEmpty: false)\n  |> yield(name: \"last\")",
+          "refId": "A"
+        }
+      ],
+      "title": "CO2 History",
+      "type": "timeseries"
+    },
+    {
+      "datasource": {
+        "type": "influxdb",
+        "uid": "influxdb"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "mappings": [],
+          "max": 5,
+          "min": 0,
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
               {
-                "id": "displayName",
-                "value": "CO2 Value"
+                "color": "dark-green",
+                "value": null
+              },
+              {
+                "color": "dark-green",
+                "value": 1
+              },
+              {
+                "color": "semi-dark-green",
+                "value": 2
+              },
+              {
+                "color": "yellow",
+                "value": 3
+              },
+              {
+                "color": "dark-red",
+                "value": 4
+              },
+              {
+                "color": "dark-red",
+                "value": 5
               }
             ]
           }
-        ]
+        },
+        "overrides": []
       },
       "gridPos": {
-        "h": 6,
-        "w": 9,
-        "x": 5,
-        "y": 6
+        "h": 8,
+        "w": 6,
+        "x": 0,
+        "y": 17
+      },
+      "id": 8,
+      "options": {
+        "orientation": "auto",
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "showThresholdLabels": true,
+        "showThresholdMarkers": true
+      },
+      "pluginVersion": "9.4.7",
+      "targets": [
+        {
+          "datasource": {
+            "type": "influxdb",
+            "uid": "influxdb"
+          },
+          "query": "from(bucket: \"airquality_monitoring\")\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\n  |> filter(fn: (r) => r[\"_measurement\"] == \"airquality_monitoring\")\n  |> filter(fn: (r) => r[\"_field\"] == \"aqi\")\n  |> filter(fn: (r) => r[\"machine\"] == \"Machine_1\")\n  |> aggregateWindow(every: v.windowPeriod, fn: last, createEmpty: false)\n  |> yield(name: \"last\")",
+          "refId": "A"
+        }
+      ],
+      "title": "AQI",
+      "type": "gauge"
+    },
+    {
+      "datasource": {
+        "type": "influxdb",
+        "uid": "influxdb"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "palette-classic"
+          },
+          "custom": {
+            "axisCenteredZero": false,
+            "axisColorMode": "text",
+            "axisLabel": "",
+            "axisPlacement": "auto",
+            "barAlignment": 0,
+            "drawStyle": "line",
+            "fillOpacity": 0,
+            "gradientMode": "none",
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            },
+            "lineInterpolation": "linear",
+            "lineWidth": 1,
+            "pointSize": 5,
+            "scaleDistribution": {
+              "type": "linear"
+            },
+            "showPoints": "auto",
+            "spanNulls": false,
+            "stacking": {
+              "group": "A",
+              "mode": "none"
+            },
+            "thresholdsStyle": {
+              "mode": "off"
+            }
+          },
+          "mappings": [],
+          "max": 5,
+          "min": 0,
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          }
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 8,
+        "w": 12,
+        "x": 6,
+        "y": 17
       },
       "id": 6,
       "options": {
@@ -619,639 +522,32 @@
         {
           "datasource": {
             "type": "influxdb",
-            "uid": "7dUnbMigk"
+            "uid": "influxdb"
           },
-          "groupBy": [
-            {
-              "params": [
-                "$__interval"
-              ],
-              "type": "time"
-            },
-            {
-              "params": [
-                "null"
-              ],
-              "type": "fill"
-            }
-          ],
-          "hide": false,
-          "measurement": "vocTable",
-          "orderByTime": "ASC",
-          "policy": "default",
-          "refId": "B",
-          "resultFormat": "time_series",
-          "select": [
-            [
-              {
-                "params": [
-                  "CO2"
-                ],
-                "type": "field"
-              },
-              {
-                "params": [],
-                "type": "mean"
-              },
-              {
-                "params": [
-                  "CO2"
-                ],
-                "type": "alias"
-              }
-            ]
-          ],
-          "tags": []
-        }
-      ],
-      "title": "CO2 History",
-      "type": "timeseries"
-    },
-    {
-      "datasource": {
-        "type": "influxdb",
-        "uid": "7dUnbMigk"
-      },
-      "fieldConfig": {
-        "defaults": {
-          "color": {
-            "mode": "thresholds"
-          },
-          "mappings": [
-            {
-              "options": {
-                "from": 1000,
-                "result": {
-                  "color": "dark-red",
-                  "index": 0,
-                  "text": "NOT OK!"
-                },
-                "to": 1000000
-              },
-              "type": "range"
-            },
-            {
-              "options": {
-                "from": 0,
-                "result": {
-                  "color": "green",
-                  "index": 1,
-                  "text": "OK"
-                },
-                "to": 1000
-              },
-              "type": "range"
-            }
-          ],
-          "thresholds": {
-            "mode": "absolute",
-            "steps": [
-              {
-                "color": "green",
-                "value": null
-              }
-            ]
-          }
-        },
-        "overrides": []
-      },
-      "gridPos": {
-        "h": 6,
-        "w": 3,
-        "x": 14,
-        "y": 6
-      },
-      "id": 16,
-      "options": {
-        "colorMode": "value",
-        "graphMode": "none",
-        "justifyMode": "center",
-        "orientation": "auto",
-        "reduceOptions": {
-          "calcs": [
-            "lastNotNull"
-          ],
-          "fields": "/^vocTable\\.mean$/",
-          "values": false
-        },
-        "textMode": "value"
-      },
-      "pluginVersion": "9.3.6",
-      "targets": [
-        {
-          "datasource": {
-            "type": "influxdb",
-            "uid": "7dUnbMigk"
-          },
-          "groupBy": [
-            {
-              "params": [
-                "$__interval"
-              ],
-              "type": "time"
-            },
-            {
-              "params": [
-                "null"
-              ],
-              "type": "fill"
-            }
-          ],
-          "measurement": "vocTable",
-          "orderByTime": "ASC",
-          "policy": "default",
-          "refId": "A",
-          "resultFormat": "time_series",
-          "select": [
-            [
-              {
-                "params": [
-                  "CO2"
-                ],
-                "type": "field"
-              },
-              {
-                "params": [],
-                "type": "mean"
-              }
-            ]
-          ],
-          "tags": []
-        }
-      ],
-      "title": "CO2 Alert",
-      "type": "stat"
-    },
-    {
-      "datasource": {
-        "type": "influxdb",
-        "uid": "7dUnbMigk"
-      },
-      "description": "",
-      "fieldConfig": {
-        "defaults": {
-          "color": {
-            "mode": "thresholds"
-          },
-          "decimals": 2,
-          "displayName": "[1 - 6]",
-          "mappings": [],
-          "max": 6,
-          "min": 0,
-          "thresholds": {
-            "mode": "absolute",
-            "steps": [
-              {
-                "color": "dark-green",
-                "value": null
-              },
-              {
-                "color": "semi-dark-green",
-                "value": 1
-              },
-              {
-                "color": "green",
-                "value": 2
-              },
-              {
-                "color": "yellow",
-                "value": 3
-              },
-              {
-                "color": "orange",
-                "value": 4
-              },
-              {
-                "color": "red",
-                "value": 5
-              },
-              {
-                "color": "dark-red",
-                "value": 6
-              }
-            ]
-          },
-          "unit": ""
-        },
-        "overrides": []
-      },
-      "gridPos": {
-        "h": 6,
-        "w": 5,
-        "x": 0,
-        "y": 12
-      },
-      "id": 9,
-      "options": {
-        "orientation": "auto",
-        "reduceOptions": {
-          "calcs": [
-            "lastNotNull"
-          ],
-          "fields": "",
-          "values": false
-        },
-        "showThresholdLabels": true,
-        "showThresholdMarkers": true,
-        "text": {}
-      },
-      "pluginVersion": "9.3.6",
-      "targets": [
-        {
-          "datasource": {
-            "type": "influxdb",
-            "uid": "7dUnbMigk"
-          },
-          "groupBy": [
-            {
-              "params": [
-                "$__interval"
-              ],
-              "type": "time"
-            },
-            {
-              "params": [
-                "null"
-              ],
-              "type": "fill"
-            }
-          ],
-          "hide": true,
-          "measurement": "vocTable",
-          "orderByTime": "ASC",
-          "policy": "default",
-          "refId": "B",
-          "resultFormat": "time_series",
-          "select": [
-            [
-              {
-                "params": [
-                  "AQI"
-                ],
-                "type": "field"
-              },
-              {
-                "params": [],
-                "type": "mean"
-              }
-            ]
-          ],
-          "tags": []
-        },
-        {
-          "datasource": {
-            "type": "influxdb",
-            "uid": "7dUnbMigk"
-          },
-          "groupBy": [
-            {
-              "params": [
-                "$__interval"
-              ],
-              "type": "time"
-            },
-            {
-              "params": [
-                "null"
-              ],
-              "type": "fill"
-            }
-          ],
-          "hide": false,
-          "measurement": "vocTable",
-          "orderByTime": "ASC",
-          "policy": "default",
-          "refId": "A",
-          "resultFormat": "time_series",
-          "select": [
-            [
-              {
-                "params": [
-                  "AQI"
-                ],
-                "type": "field"
-              },
-              {
-                "params": [],
-                "type": "mean"
-              }
-            ]
-          ],
-          "tags": []
-        }
-      ],
-      "title": "Air Quality",
-      "type": "gauge"
-    },
-    {
-      "datasource": {
-        "type": "influxdb",
-        "uid": "7dUnbMigk"
-      },
-      "fieldConfig": {
-        "defaults": {
-          "color": {
-            "mode": "palette-classic"
-          },
-          "custom": {
-            "axisCenteredZero": false,
-            "axisColorMode": "text",
-            "axisLabel": "",
-            "axisPlacement": "auto",
-            "barAlignment": 0,
-            "drawStyle": "line",
-            "fillOpacity": 0,
-            "gradientMode": "none",
-            "hideFrom": {
-              "legend": false,
-              "tooltip": false,
-              "viz": false
-            },
-            "lineInterpolation": "linear",
-            "lineWidth": 1,
-            "pointSize": 5,
-            "scaleDistribution": {
-              "type": "linear"
-            },
-            "showPoints": "auto",
-            "spanNulls": false,
-            "stacking": {
-              "group": "A",
-              "mode": "none"
-            },
-            "thresholdsStyle": {
-              "mode": "off"
-            }
-          },
-          "mappings": [],
-          "max": 6,
-          "min": 0,
-          "thresholds": {
-            "mode": "absolute",
-            "steps": [
-              {
-                "color": "green",
-                "value": null
-              }
-            ]
-          }
-        },
-        "overrides": [
-          {
-            "matcher": {
-              "id": "byName",
-              "options": "vocTable.AQI"
-            },
-            "properties": [
-              {
-                "id": "displayName",
-                "value": "Air Quality Index"
-              }
-            ]
-          }
-        ]
-      },
-      "gridPos": {
-        "h": 6,
-        "w": 9,
-        "x": 5,
-        "y": 12
-      },
-      "id": 13,
-      "options": {
-        "legend": {
-          "calcs": [],
-          "displayMode": "list",
-          "placement": "bottom",
-          "showLegend": true
-        },
-        "tooltip": {
-          "mode": "single",
-          "sort": "none"
-        }
-      },
-      "targets": [
-        {
-          "datasource": {
-            "type": "influxdb",
-            "uid": "7dUnbMigk"
-          },
-          "groupBy": [
-            {
-              "params": [
-                "$__interval"
-              ],
-              "type": "time"
-            },
-            {
-              "params": [
-                "null"
-              ],
-              "type": "fill"
-            }
-          ],
-          "measurement": "vocTable",
-          "orderByTime": "ASC",
-          "policy": "default",
-          "refId": "A",
-          "resultFormat": "time_series",
-          "select": [
-            [
-              {
-                "params": [
-                  "AQI"
-                ],
-                "type": "field"
-              },
-              {
-                "params": [],
-                "type": "mean"
-              },
-              {
-                "params": [
-                  "AQI"
-                ],
-                "type": "alias"
-              }
-            ]
-          ],
-          "tags": []
-        }
-      ],
-      "title": "Air Quality History",
-      "type": "timeseries"
-    },
-    {
-      "datasource": {
-        "type": "influxdb",
-        "uid": "7dUnbMigk"
-      },
-      "fieldConfig": {
-        "defaults": {
-          "color": {
-            "mode": "thresholds"
-          },
-          "mappings": [
-            {
-              "options": {
-                "from": 4,
-                "result": {
-                  "color": "dark-red",
-                  "index": 0,
-                  "text": "NOT OK!"
-                },
-                "to": 10
-              },
-              "type": "range"
-            },
-            {
-              "options": {
-                "from": 0,
-                "result": {
-                  "color": "green",
-                  "index": 1,
-                  "text": "OK"
-                },
-                "to": 3
-              },
-              "type": "range"
-            }
-          ],
-          "thresholds": {
-            "mode": "absolute",
-            "steps": [
-              {
-                "color": "green",
-                "value": null
-              },
-              {
-                "color": "red",
-                "value": 80
-              }
-            ]
-          }
-        },
-        "overrides": []
-      },
-      "gridPos": {
-        "h": 6,
-        "w": 3,
-        "x": 14,
-        "y": 12
-      },
-      "id": 17,
-      "options": {
-        "colorMode": "value",
-        "graphMode": "none",
-        "justifyMode": "center",
-        "orientation": "auto",
-        "reduceOptions": {
-          "calcs": [
-            "lastNotNull"
-          ],
-          "fields": "/^vocTable\\.mean$/",
-          "values": false
-        },
-        "textMode": "value"
-      },
-      "pluginVersion": "9.3.6",
-      "targets": [
-        {
-          "datasource": {
-            "type": "influxdb",
-            "uid": "7dUnbMigk"
-          },
-          "groupBy": [
-            {
-              "params": [
-                "$__interval"
-              ],
-              "type": "time"
-            },
-            {
-              "params": [
-                "null"
-              ],
-              "type": "fill"
-            }
-          ],
-          "measurement": "vocTable",
-          "orderByTime": "ASC",
-          "policy": "default",
-          "refId": "A",
-          "resultFormat": "time_series",
-          "select": [
-            [
-              {
-                "params": [
-                  "AQI"
-                ],
-                "type": "field"
-              },
-              {
-                "params": [],
-                "type": "mean"
-              }
-            ]
-          ],
-          "tags": []
-        }
-      ],
-      "title": "AQI Alert",
-      "type": "stat"
-    },
-    {
-      "datasource": {
-        "type": "influxdb",
-        "uid": "KDIdzWWRz"
-      },
-      "description": "",
-      "gridPos": {
-        "h": 2,
-        "w": 16,
-        "x": 0,
-        "y": 18
-      },
-      "id": 8,
-      "links": [],
-      "options": {
-        "code": {
-          "language": "html",
-          "showLineNumbers": false,
-          "showMiniMap": false
-        },
-        "content": "   Air Monitoring from Shoestring and the University of Cambridge as part of SMDH (more information at <a href=\"https://www.digitalshoestring.net\">digitalshoestring.net</a>)\r\n",
-        "mode": "html"
-      },
-      "pluginVersion": "9.3.6",
-      "targets": [
-        {
-          "datasource": {
-            "type": "influxdb",
-            "uid": "KDIdzWWRz"
-          },
+          "query": "from(bucket: \"airquality_monitoring\")\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\n  |> filter(fn: (r) => r[\"_measurement\"] == \"airquality_monitoring\")\n  |> filter(fn: (r) => r[\"_field\"] == \"aqi\")\n  |> filter(fn: (r) => r[\"machine\"] == \"Machine_1\")\n  |> aggregateWindow(every: v.windowPeriod, fn: last, createEmpty: false)\n  |> yield(name: \"last\")",
           "refId": "A"
         }
       ],
-      "transparent": true,
-      "type": "text"
+      "title": "AQI History",
+      "type": "timeseries"
     }
   ],
-  "refresh": "5s",
-  "schemaVersion": 37,
+  "refresh": "",
+  "revision": 1,
+  "schemaVersion": 38,
   "style": "dark",
   "tags": [],
   "templating": {
     "list": []
   },
   "time": {
-    "from": "now-5m",
+    "from": "now-6h",
     "to": "now"
   },
   "timepicker": {},
   "timezone": "",
-  "title": "Air Monitoring",
-  "uid": "q39y6tRgk",
-  "version": 15,
+  "title": "New dashboard",
+  "uid": "0QKtTznSk",
+  "version": 11,
   "weekStart": ""
 }
