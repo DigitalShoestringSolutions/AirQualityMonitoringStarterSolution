@@ -1,1 +1,1 @@
-# Power Monitoring Starter Solution
+# Air Quality Monitoring Starter Solution
