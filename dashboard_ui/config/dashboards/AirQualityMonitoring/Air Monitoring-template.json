@@ -24,7 +24,7 @@
   "editable": true,
   "fiscalYearStartMonth": 0,
   "graphTooltip": 0,
-  "id": 4,
+  "id": 2,
   "links": [],
   "liveNow": false,
   "panels": [
@@ -546,8 +546,8 @@
   },
   "timepicker": {},
   "timezone": "",
-  "title": "New dashboard",
+  "title": "Air Quality Monitoring",
   "uid": "0QKtTznSk",
-  "version": 11,
+  "version": 2,
   "weekStart": ""
 }
