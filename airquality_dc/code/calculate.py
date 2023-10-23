@@ -36,5 +36,5 @@ class AirQualityMonitoringCalculation:
 
 
     def calculate(self, sample):
-        logger.debug(f"tvoc: {sample.tvoc} ppm: {sample.ppm} aqi: {sample.aqi}")
-        return {"tvoc": str(sample.tvoc), "ppm": str(sample.ppm), "aqi": str(sample.aqi)}
+        logger.debug(f"TVOC: {sample.tvoc} CO2: {sample.ppm} AQI: {sample.aqi}")
+        return {"TVOC": str(sample.tvoc), "CO2": str(sample.ppm), "AQI": str(sample.aqi)}
