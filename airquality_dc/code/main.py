@@ -7,7 +7,7 @@
 #    displays VOC and CO2 concentration and VOC Index, and an InfluxDB database 
 #    to store timestamp, VOC, CO2 and VOC Index. 
 #
-#    Copyright (C) 2022  Shoestring and University of Cambridge
+#    Copyright (C) 2023  Shoestring and University of Cambridge
 #
 #    This program is free software: you can redistribute it and/or modify
 #    it under the terms of the GNU General Public License as published by
