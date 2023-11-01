@@ -1,1 +1,1 @@
-# AirMonitoringStarterSolution
+# Air Quality Monitoring Starter Solution
