@@ -1,11 +1,9 @@
 # ----------------------------------------------------------------------
 #
-#    Air Quality Monitoring -- This digital solution measures,
-#    reports and records the concentration of Volatile Organic Compound (VOC)
-#    CO2 and VOC index in the environment. 
-#    The solution provides a Grafana dashboard that 
-#    displays VOC and CO2 concentration and VOC Index, and an InfluxDB database 
-#    to store timestamp, VOC, CO2 and VOC Index. 
+#    Dockerfile script -- This file is part of the Air Quality Monitoring 
+#    distribution. It contains all the commands needed to 
+#    assemble an image of the solution on a Raspberry Pi 4b with raspbian 
+#    OS version 11 (bullseye) 64 bits. 
 #
 #    Copyright (C) 2023  Shoestring and University of Cambridge
 #
