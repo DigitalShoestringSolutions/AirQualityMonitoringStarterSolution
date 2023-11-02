@@ -29,8 +29,5 @@ RUN git clone https://github.com/DigitalShoestringSolutions/grove.py /grove && c
 WORKDIR /app
 ADD ./code/ /app
 
-WORKDIR /app/adc/pyRock
-RUN yes | python3 setup.py install
-WORKDIR /app
 
 CMD [ "python3", "/app/main.py"]
