@@ -19,6 +19,7 @@ import time
 import smbus
 import spidev
 
+
 import logging
 from ctypes import *
 
@@ -370,4 +371,7 @@ class DFRobot_ENS160_I2C(DFRobot_ENS160):
           @return read data list
         '''
         return self.i2c.read_i2c_block_data(self._addr, reg, length)
+
+
+
 
