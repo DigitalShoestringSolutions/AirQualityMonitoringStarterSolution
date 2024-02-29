@@ -18,7 +18,7 @@ import time
 
 import smbus
 import spidev
-import pyRock.gpio as GPIO
+
 
 import logging
 from ctypes import *
@@ -373,59 +373,5 @@ class DFRobot_ENS160_I2C(DFRobot_ENS160):
         return self.i2c.read_i2c_block_data(self._addr, reg, length)
 
 
-class DFRobot_ENS160_SPI(DFRobot_ENS160):
-    '''!
-      @brief Define DFRobot_ENS160_SPI basic class
-      @details Use SPI protocol to drive the pressure sensor
-    '''
 
-    def __init__(self, cs=8, bus=0, dev=0, speed=2000000):
-        '''!
-          @brief Module SPI communication init
-          @param cs cs chip select pin
-          @param bus SPI bus 
-          @param dev SPI device number
-          @param speed SPI communication frequency
-        '''
-        self._cs = cs
-        GPIO.setmode(GPIO.BCM)
-        GPIO.setwarnings(False)
-        GPIO.setup(self._cs, GPIO.OUT, initial=1)
-        GPIO.output(self._cs, GPIO.LOW)
-        self.spi = spidev.SpiDev()
-        self.spi.open(bus, dev)
-        self.spi.no_cs = True
-        self.spi.max_speed_hz = speed
-        super(DFRobot_ENS160_SPI, self).__init__()
 
-    def _write_reg(self, reg, data):
-        '''!
-          @brief writes data to a register
-          @param reg register address
-          @param data written data
-        '''
-        if isinstance(data, int):
-            data = [data]
-            #logger.info(data)
-        reg_addr = [(reg << 1) & 0xFE]
-        GPIO.output(self._cs, GPIO.LOW)
-        self.spi.xfer(reg_addr)
-        self.spi.xfer(data)
-        GPIO.output(self._cs, GPIO.HIGH)
-
-    def _read_reg(self, reg, length):
-        '''!
-          @brief read the data from the register
-          @param reg register address
-          @param length length of data to be read 
-          @return read data list
-        '''
-        reg_addr = [(reg << 1) | 0x01]
-        GPIO.output(self._cs, GPIO.LOW)
-        #logger.info(reg_addr)
-        self.spi.xfer(reg_addr)
-        time.sleep(0.01)
-        # self.spi.readbytes(1)
-        rslt = self.spi.readbytes(length)
-        GPIO.output(self._cs, GPIO.HIGH)
-        return rslt
