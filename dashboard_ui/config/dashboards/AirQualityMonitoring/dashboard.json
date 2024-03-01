@@ -24,7 +24,7 @@
   "editable": true,
   "fiscalYearStartMonth": 0,
   "graphTooltip": 0,
-  "id": 7,
+  "id": 2,
   "links": [],
   "liveNow": false,
   "panels": [
@@ -49,20 +49,20 @@
                 "value": null
               },
               {
-                "color": "dark-green",
-                "value": 0
+                "color": "semi-dark-green",
+                "value": 200
               },
               {
                 "color": "yellow",
-                "value": 50
+                "value": 400
               },
               {
                 "color": "red",
-                "value": 750
+                "value": 600
               },
               {
                 "color": "semi-dark-red",
-                "value": 1500
+                "value": 800
               }
             ]
           },
@@ -71,7 +71,7 @@
         "overrides": []
       },
       "gridPos": {
-        "h": 9,
+        "h": 7,
         "w": 6,
         "x": 0,
         "y": 0
@@ -144,7 +144,7 @@
             }
           },
           "mappings": [],
-          "max": 6000,
+          "max": 1500,
           "min": 0,
           "thresholds": {
             "mode": "absolute",
@@ -159,12 +159,12 @@
               }
             ]
           },
-          "unit": "ppm"
+          "unit": "conppb"
         },
         "overrides": []
       },
       "gridPos": {
-        "h": 9,
+        "h": 7,
         "w": 12,
         "x": 6,
         "y": 0
@@ -206,7 +206,7 @@
             "mode": "thresholds"
           },
           "mappings": [],
-          "max": 1500,
+          "max": 5000,
           "min": 0,
           "thresholds": {
             "mode": "absolute",
@@ -217,19 +217,19 @@
               },
               {
                 "color": "green",
-                "value": 600
+                "value": 500
               },
               {
                 "color": "yellow",
-                "value": 800
-              },
-              {
-                "color": "orange",
                 "value": 1000
               },
               {
-                "color": "semi-dark-red",
+                "color": "orange",
                 "value": 1500
+              },
+              {
+                "color": "semi-dark-red",
+                "value": 3000
               }
             ]
           },
@@ -238,10 +238,10 @@
         "overrides": []
       },
       "gridPos": {
-        "h": 8,
+        "h": 7,
         "w": 6,
         "x": 0,
-        "y": 9
+        "y": 7
       },
       "id": 9,
       "options": {
@@ -311,7 +311,7 @@
             }
           },
           "mappings": [],
-          "max": 21500,
+          "max": 5000,
           "min": 0,
           "thresholds": {
             "mode": "absolute",
@@ -326,15 +326,15 @@
               }
             ]
           },
-          "unit": "conppb"
+          "unit": "ppm"
         },
         "overrides": []
       },
       "gridPos": {
-        "h": 8,
+        "h": 7,
         "w": 12,
         "x": 6,
-        "y": 9
+        "y": 7
       },
       "id": 4,
       "options": {
@@ -408,10 +408,10 @@
         "overrides": []
       },
       "gridPos": {
-        "h": 8,
+        "h": 7,
         "w": 6,
         "x": 0,
-        "y": 17
+        "y": 14
       },
       "id": 8,
       "options": {
@@ -500,10 +500,10 @@
         "overrides": []
       },
       "gridPos": {
-        "h": 8,
+        "h": 7,
         "w": 12,
         "x": 6,
-        "y": 17
+        "y": 14
       },
       "id": 6,
       "options": {
@@ -573,6 +573,6 @@
   "timezone": "",
   "title": "Air Quality Monitoring",
   "uid": "0QKtTznSk",
-  "version": 3,
+  "version": 4,
   "weekStart": ""
 }
