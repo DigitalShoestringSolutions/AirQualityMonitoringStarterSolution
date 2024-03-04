@@ -2,7 +2,7 @@
     machine="Machine_1"	#Name of the machine being monitored (can't have spaces)
 
 [adc]
-    # uncomment the adc that you are using (default is BCRobotics)
+    # uncomment the sensor that you are using
     adc_module = "ens160"
 
 [sampling]
