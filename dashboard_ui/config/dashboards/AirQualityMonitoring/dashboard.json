@@ -142,10 +142,14 @@
               },
               {
                 "color": "semi-dark-green",
-                "value": 200
+                "value": 75
               },
               {
                 "color": "yellow",
+                "value": 200
+              },
+              {
+                "color": "orange",
                 "value": 400
               },
               {
@@ -153,7 +157,7 @@
                 "value": 600
               },
               {
-                "color": "semi-dark-red",
+                "color": "dark-red",
                 "value": 800
               }
             ]
@@ -320,8 +324,12 @@
                 "value": 1500
               },
               {
-                "color": "semi-dark-red",
-                "value": 3000
+                "color": "red",
+                "value": 2500
+              },
+              {
+                "color": "dark-red",
+                "value": 3500
               }
             ]
           },
@@ -474,24 +482,20 @@
                 "value": null
               },
               {
-                "color": "dark-green",
+                "color": "green",
                 "value": 1
               },
               {
-                "color": "semi-dark-green",
+                "color": "yellow",
                 "value": 2
               },
               {
-                "color": "yellow",
+                "color": "orange",
                 "value": 3
               },
               {
                 "color": "dark-red",
                 "value": 4
-              },
-              {
-                "color": "dark-red",
-                "value": 5
               }
             ]
           }
@@ -573,6 +577,6 @@
   "timezone": "",
   "title": "Air Quality Monitoring",
   "uid": "0QKtTznSk",
-  "version": 5,
+  "version": 10,
   "weekStart": ""
 }
