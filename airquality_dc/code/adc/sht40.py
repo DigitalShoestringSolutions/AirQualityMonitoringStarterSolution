@@ -21,5 +21,14 @@ def calculate_temperature(S_T):
   return T_degC
 
 def calculate_relativehumidity(S_RH):
-  RH = -6 + (125*S_RH/65535_)
-  return T_degC, RH
+  RH = -6 + (125*S_RH/65535)
+  return RH
+
+if __name__ == '__main__':
+  import time
+  while True:
+    readings = read()
+    print("T:", calculate_temperature(readings[0]), "degC")
+    print("RH:", calculate_relativehumidity(readings[1]), "%")
+    print()
+    time.sleep(1)
