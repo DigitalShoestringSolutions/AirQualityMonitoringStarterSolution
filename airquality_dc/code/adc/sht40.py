@@ -4,7 +4,7 @@
 # Future features: heater, cropping of RH values, validating checksum, calibration...
 
 # imports
-from smbus2 import SMBus
+from smbus2 import SMBus, i2c_msg
 from time import sleep
 
 _SHT40_I2C_ADDRESS = 0x44
@@ -16,14 +16,19 @@ def _read():
 
     # ask the sensor to take a reading
     bus.i2c_rdwr(i2c_msg.write(_SHT40_I2C_ADDRESS, [_COMMAND_READ_TRH]))
-    
+
     # allow time for the sensor to take a valid reading
     sleep(0.01)
 
-    # Clock the reading out of the sensor    
-    read_bytes = bus.i2c_rdwr(i2c_msg.read(_SHT40_I2C_ADDRESS, 6))
-    S_T = read_bytes[0:1]
-    S_RH = read_bytes[3:4]
+    # Clock the reading out of the sensor
+    msg = i2c_msg.read(_SHT40_I2C_ADDRESS, 6))
+    bus.i2c_rdwr(msg)
+
+    # Post process data
+    read_bytes = list(msg)
+    S_T = (read_bytes[1] << 8) | (read_bytes[0])
+    S_RH = (read_bytes[4] << 8) | (read_bytes[3])
+    
   return S_T, S_RH
 
 def _calculate_temperature(S_T):
