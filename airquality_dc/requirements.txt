@@ -7,4 +7,4 @@ smbus
 bcr-libraries
 spidev
 rpi.gpio
-bmp280=0.0.4
+bmp280==0.0.4
