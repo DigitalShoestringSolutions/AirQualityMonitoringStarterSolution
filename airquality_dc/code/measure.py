@@ -37,8 +37,6 @@ import time
 import importlib
 import zmq
 
-import calculate as calc
-
 logger = logging.getLogger("main.measure")
 context = zmq.Context()
 
@@ -89,8 +87,6 @@ class AirQualityMeasureBuildingBlock(multiprocessing.Process):
             return
 
         adc = adc_module.ADC(self.config)
-
-        calculation = calc.AirQualityMonitoringCalculation(self.config)
         
 
         sleep_time = period
@@ -119,7 +115,7 @@ class AirQualityMeasureBuildingBlock(multiprocessing.Process):
             timestamp = datetime.datetime.now(tz=tz).isoformat()
 
             # convert
-            results = calculation.calculate(sample)
+            results = {"TVOC": str(sample.tvoc), "CO2": str(sample.ppm), "AQI": str(sample.aqi)}
             payload = {**results, **self.constants, "timestamp": timestamp}
 
                 # send
