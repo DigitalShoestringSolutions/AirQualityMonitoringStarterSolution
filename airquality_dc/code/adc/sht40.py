@@ -21,23 +21,23 @@ def _read():
     sleep(0.01)
 
     # Clock the reading out of the sensor
-    msg = i2c_msg.read(_SHT40_I2C_ADDRESS, 6))
+    msg = i2c_msg.read(_SHT40_I2C_ADDRESS, 6)
     bus.i2c_rdwr(msg)
 
     # Post process data
     read_bytes = list(msg)
     S_T = (read_bytes[1] << 8) | (read_bytes[0])
     S_RH = (read_bytes[4] << 8) | (read_bytes[3])
-    
+
   return S_T, S_RH
 
 def _calculate_temperature(S_T):
-  """Calculate a temperature from adc bytes"""
+  """Calculate a temperature from adc int"""
   T_degC = -45 + (175*S_T/65535)
   return T_degC
 
 def _calculate_relativehumidity(S_RH):
-  """Calculate a relative humidity from adc bytes"""
+  """Calculate a relative humidity from adc int"""
   RH = -6 + (125*S_RH/65535)
   return RH
 
