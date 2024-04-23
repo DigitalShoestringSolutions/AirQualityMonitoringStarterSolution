@@ -5,6 +5,7 @@
 
 # imports
 from smbus2 import SMBus
+from time import sleep
 
 _SHT40_I2C_ADDRESS = 0x44
 _COMMAND_READ_TRH = 0xFD
@@ -12,7 +13,15 @@ _COMMAND_READ_TRH = 0xFD
 def _read():
   """Read bytes containing temperature and humidity data from the i2c bus"""
   with SMBus(1) as bus:
-    read_bytes = bus.read_i2c_block_data(_SHT40_I2C_ADDRESS, _COMMAND_READ_TRH, 6)
+
+    # ask the sensor to take a reading
+    bus.i2c_rdwr(i2c_msg.write(_SHT40_I2C_ADDRESS, [_COMMAND_READ_TRH]))
+    
+    # allow time for the sensor to take a valid reading
+    sleep(0.01)
+
+    # Clock the reading out of the sensor    
+    read_bytes = bus.i2c_rdwr(i2c_msg.read(_SHT40_I2C_ADDRESS, 6))
     S_T = read_bytes[0:1]
     S_RH = read_bytes[3:4]
   return S_T, S_RH
