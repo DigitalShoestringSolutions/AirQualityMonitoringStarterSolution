@@ -9,7 +9,7 @@ import bmp280_wrapper
 
 class ADC: # as required by measure.py
 
-  def sample():
+  def sample(self):
     """Sample both the sht40 and bmp280"""
 
     Ts, RH = sht40.get_TRH()
