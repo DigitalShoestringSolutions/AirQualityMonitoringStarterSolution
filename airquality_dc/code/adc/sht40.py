@@ -8,14 +8,14 @@ from smbus2 import SMBus, i2c_msg
 from time import sleep
 
 _SHT40_I2C_ADDRESS = 0x44
-_COMMAND_READ_TRH = 0xFD
+_COMMAND_MEASURE_TRH = 0xFD # measure T & RH with high precision & repeatability
 
 def _read():
   """Read bytes containing temperature and humidity data from the i2c bus"""
   with SMBus(1) as bus:
 
     # ask the sensor to take a reading
-    bus.i2c_rdwr(i2c_msg.write(_SHT40_I2C_ADDRESS, [_COMMAND_READ_TRH]))
+    bus.i2c_rdwr(i2c_msg.write(_SHT40_I2C_ADDRESS, [_COMMAND_MEASURE_TRH]))
 
     # allow time for the sensor to take a valid reading
     sleep(0.01)
@@ -55,3 +55,9 @@ if __name__ == '__main__':
     print("RH:", TRH[1], "%")
     print()
     time.sleep(1)
+
+# The data this produces is pants. T & RH shooting +-100. 
+# I've manually validated a few checksums (using http://www.sunshine2k.de/coding/javascript/crc/crc_js.html and the custom settings on page 9 of https://m5stack.oss-cn-shenzhen.aliyuncs.com/resource/docs/products/unit/ENV%E2%85%A3%20Unit/SHT40.pdf)
+# They're all fine.
+# The sensirion code is a bit heavy - multiple pip packages - for what should be a very straightforward read. 
+# I'd like to fix this. 
