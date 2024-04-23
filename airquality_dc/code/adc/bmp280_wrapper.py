@@ -6,7 +6,7 @@
 from bmp280 import BMP280
 from smbus2 import SMBus
 
-def get_TP:
+def get_TP():
   with SMBus(1) as bus:
     bmp280 = BMP280(i2c_dev=bus)
     temperature = bmp280.get_temperature()
