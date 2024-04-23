@@ -117,7 +117,7 @@
           "refId": "A"
         }
       ],
-      "title": "VOC History",
+      "title": "Volatile Organic Compounds History",
       "type": "timeseries"
     },
     {
@@ -196,7 +196,7 @@
           "refId": "A"
         }
       ],
-      "title": "VOC",
+      "title": "Volatile Organic Compounds:",
       "type": "gauge"
     },
     {
@@ -288,7 +288,7 @@
           "refId": "A"
         }
       ],
-      "title": "CO2 History",
+      "title": "Carbon Dioxide History",
       "type": "timeseries"
     },
     {
@@ -367,7 +367,7 @@
           "refId": "A"
         }
       ],
-      "title": "CO2",
+      "title": "Carbon Dioxide:",
       "type": "gauge"
     },
     {
@@ -458,7 +458,7 @@
           "refId": "A"
         }
       ],
-      "title": "AQI History",
+      "title": "Air Quality Index History",
       "type": "timeseries"
     },
     {
@@ -532,7 +532,7 @@
           "refId": "A"
         }
       ],
-      "title": "AQI",
+      "title": "Air Quality Index:",
       "type": "gauge"
     }
   ],
@@ -570,13 +570,13 @@
     ]
   },
   "time": {
-    "from": "now-1h",
+    "from": "now-5m",
     "to": "now"
   },
   "timepicker": {},
   "timezone": "",
   "title": "Air Quality Monitoring",
   "uid": "0QKtTznSk",
-  "version": 10,
+  "version": 2,
   "weekStart": ""
 }
