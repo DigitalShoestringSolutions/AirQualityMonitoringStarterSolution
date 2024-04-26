@@ -24,10 +24,102 @@
   "editable": true,
   "fiscalYearStartMonth": 0,
   "graphTooltip": 0,
-  "id": 7,
+  "id": 2,
   "links": [],
   "liveNow": false,
   "panels": [
+    {
+      "datasource": {
+        "type": "influxdb",
+        "uid": "influxdb"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "palette-classic"
+          },
+          "custom": {
+            "axisCenteredZero": false,
+            "axisColorMode": "text",
+            "axisLabel": "",
+            "axisPlacement": "auto",
+            "barAlignment": 0,
+            "drawStyle": "line",
+            "fillOpacity": 0,
+            "gradientMode": "none",
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            },
+            "lineInterpolation": "linear",
+            "lineWidth": 1,
+            "pointSize": 5,
+            "scaleDistribution": {
+              "type": "linear"
+            },
+            "showPoints": "auto",
+            "spanNulls": false,
+            "stacking": {
+              "group": "A",
+              "mode": "none"
+            },
+            "thresholdsStyle": {
+              "mode": "off"
+            }
+          },
+          "mappings": [],
+          "max": 1500,
+          "min": 0,
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          },
+          "unit": "conppb"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 7,
+        "w": 18,
+        "x": 0,
+        "y": 0
+      },
+      "id": 2,
+      "options": {
+        "legend": {
+          "calcs": [],
+          "displayMode": "list",
+          "placement": "bottom",
+          "showLegend": true
+        },
+        "tooltip": {
+          "mode": "single",
+          "sort": "none"
+        }
+      },
+      "targets": [
+        {
+          "datasource": {
+            "type": "influxdb",
+            "uid": "influxdb"
+          },
+          "query": "from(bucket: \"airquality_monitoring\")\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\n  |> filter(fn: (r) => r[\"_measurement\"] == \"airquality_monitoring\")\n  |> filter(fn: (r) => r[\"_field\"] == \"TVOC\")\n  |> filter(fn: (r) => r[\"machine\"] == \"${machine}\")\n  |> aggregateWindow(every: v.windowPeriod, fn: last, createEmpty: false)\n  |> yield(name: \"last\")",
+          "refId": "A"
+        }
+      ],
+      "title": "Volatile Organic Compounds History",
+      "type": "timeseries"
+    },
     {
       "datasource": {
         "type": "influxdb",
@@ -49,20 +141,24 @@
                 "value": null
               },
               {
-                "color": "dark-green",
-                "value": 0
+                "color": "semi-dark-green",
+                "value": 75
               },
               {
                 "color": "yellow",
-                "value": 50
+                "value": 200
+              },
+              {
+                "color": "orange",
+                "value": 400
               },
               {
                 "color": "red",
-                "value": 750
+                "value": 600
               },
               {
-                "color": "semi-dark-red",
-                "value": 1500
+                "color": "dark-red",
+                "value": 800
               }
             ]
           },
@@ -71,9 +167,9 @@
         "overrides": []
       },
       "gridPos": {
-        "h": 9,
+        "h": 7,
         "w": 6,
-        "x": 0,
+        "x": 18,
         "y": 0
       },
       "id": 10,
@@ -100,7 +196,7 @@
           "refId": "A"
         }
       ],
-      "title": "VOC",
+      "title": "Volatile Organic Compounds:",
       "type": "gauge"
     },
     {
@@ -144,7 +240,7 @@
             }
           },
           "mappings": [],
-          "max": 6000,
+          "max": 5000,
           "min": 0,
           "thresholds": {
             "mode": "absolute",
@@ -164,12 +260,12 @@
         "overrides": []
       },
       "gridPos": {
-        "h": 9,
-        "w": 12,
-        "x": 6,
-        "y": 0
+        "h": 7,
+        "w": 18,
+        "x": 0,
+        "y": 7
       },
-      "id": 2,
+      "id": 4,
       "options": {
         "legend": {
           "calcs": [],
@@ -188,11 +284,11 @@
             "type": "influxdb",
             "uid": "influxdb"
           },
-          "query": "from(bucket: \"airquality_monitoring\")\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\n  |> filter(fn: (r) => r[\"_measurement\"] == \"airquality_monitoring\")\n  |> filter(fn: (r) => r[\"_field\"] == \"TVOC\")\n  |> filter(fn: (r) => r[\"machine\"] == \"${machine}\")\n  |> aggregateWindow(every: v.windowPeriod, fn: last, createEmpty: false)\n  |> yield(name: \"last\")",
+          "query": "from(bucket: \"airquality_monitoring\")\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\n  |> filter(fn: (r) => r[\"_measurement\"] == \"airquality_monitoring\")\n  |> filter(fn: (r) => r[\"_field\"] == \"CO2\")\n  |> filter(fn: (r) => r[\"machine\"] == \"${machine}\")\n  |> aggregateWindow(every: v.windowPeriod, fn: last, createEmpty: false)\n  |> yield(name: \"last\")",
           "refId": "A"
         }
       ],
-      "title": "VOC History",
+      "title": "Carbon Dioxide History",
       "type": "timeseries"
     },
     {
@@ -206,7 +302,7 @@
             "mode": "thresholds"
           },
           "mappings": [],
-          "max": 1500,
+          "max": 5000,
           "min": 0,
           "thresholds": {
             "mode": "absolute",
@@ -217,19 +313,23 @@
               },
               {
                 "color": "green",
-                "value": 600
+                "value": 500
               },
               {
                 "color": "yellow",
-                "value": 800
-              },
-              {
-                "color": "orange",
                 "value": 1000
               },
               {
-                "color": "semi-dark-red",
+                "color": "orange",
                 "value": 1500
+              },
+              {
+                "color": "red",
+                "value": 2500
+              },
+              {
+                "color": "dark-red",
+                "value": 3500
               }
             ]
           },
@@ -238,10 +338,10 @@
         "overrides": []
       },
       "gridPos": {
-        "h": 8,
+        "h": 7,
         "w": 6,
-        "x": 0,
-        "y": 9
+        "x": 18,
+        "y": 7
       },
       "id": 9,
       "options": {
@@ -267,7 +367,7 @@
           "refId": "A"
         }
       ],
-      "title": "CO2",
+      "title": "Carbon Dioxide:",
       "type": "gauge"
     },
     {
@@ -311,7 +411,7 @@
             }
           },
           "mappings": [],
-          "max": 21500,
+          "max": 5,
           "min": 0,
           "thresholds": {
             "mode": "absolute",
@@ -325,18 +425,17 @@
                 "value": 80
               }
             ]
-          },
-          "unit": "conppb"
+          }
         },
         "overrides": []
       },
       "gridPos": {
-        "h": 8,
-        "w": 12,
-        "x": 6,
-        "y": 9
+        "h": 7,
+        "w": 18,
+        "x": 0,
+        "y": 14
       },
-      "id": 4,
+      "id": 6,
       "options": {
         "legend": {
           "calcs": [],
@@ -355,11 +454,11 @@
             "type": "influxdb",
             "uid": "influxdb"
           },
-          "query": "from(bucket: \"airquality_monitoring\")\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\n  |> filter(fn: (r) => r[\"_measurement\"] == \"airquality_monitoring\")\n  |> filter(fn: (r) => r[\"_field\"] == \"CO2\")\n  |> filter(fn: (r) => r[\"machine\"] == \"${machine}\")\n  |> aggregateWindow(every: v.windowPeriod, fn: last, createEmpty: false)\n  |> yield(name: \"last\")",
+          "query": "from(bucket: \"airquality_monitoring\")\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\n  |> filter(fn: (r) => r[\"_measurement\"] == \"airquality_monitoring\")\n  |> filter(fn: (r) => r[\"_field\"] == \"AQI\")\n  |> filter(fn: (r) => r[\"machine\"] == \"${machine}\")\n  |> aggregateWindow(every: v.windowPeriod, fn: last, createEmpty: false)\n  |> yield(name: \"last\")",
           "refId": "A"
         }
       ],
-      "title": "CO2 History",
+      "title": "Air Quality Index History",
       "type": "timeseries"
     },
     {
@@ -383,24 +482,20 @@
                 "value": null
               },
               {
-                "color": "dark-green",
+                "color": "green",
                 "value": 1
               },
               {
-                "color": "semi-dark-green",
+                "color": "yellow",
                 "value": 2
               },
               {
-                "color": "yellow",
+                "color": "orange",
                 "value": 3
               },
               {
                 "color": "dark-red",
                 "value": 4
-              },
-              {
-                "color": "dark-red",
-                "value": 5
               }
             ]
           }
@@ -408,10 +503,10 @@
         "overrides": []
       },
       "gridPos": {
-        "h": 8,
+        "h": 7,
         "w": 6,
-        "x": 0,
-        "y": 17
+        "x": 18,
+        "y": 14
       },
       "id": 8,
       "options": {
@@ -437,99 +532,8 @@
           "refId": "A"
         }
       ],
-      "title": "AQI",
+      "title": "Air Quality Index:",
       "type": "gauge"
-    },
-    {
-      "datasource": {
-        "type": "influxdb",
-        "uid": "influxdb"
-      },
-      "fieldConfig": {
-        "defaults": {
-          "color": {
-            "mode": "palette-classic"
-          },
-          "custom": {
-            "axisCenteredZero": false,
-            "axisColorMode": "text",
-            "axisLabel": "",
-            "axisPlacement": "auto",
-            "barAlignment": 0,
-            "drawStyle": "line",
-            "fillOpacity": 0,
-            "gradientMode": "none",
-            "hideFrom": {
-              "legend": false,
-              "tooltip": false,
-              "viz": false
-            },
-            "lineInterpolation": "linear",
-            "lineWidth": 1,
-            "pointSize": 5,
-            "scaleDistribution": {
-              "type": "linear"
-            },
-            "showPoints": "auto",
-            "spanNulls": false,
-            "stacking": {
-              "group": "A",
-              "mode": "none"
-            },
-            "thresholdsStyle": {
-              "mode": "off"
-            }
-          },
-          "mappings": [],
-          "max": 5,
-          "min": 0,
-          "thresholds": {
-            "mode": "absolute",
-            "steps": [
-              {
-                "color": "green",
-                "value": null
-              },
-              {
-                "color": "red",
-                "value": 80
-              }
-            ]
-          }
-        },
-        "overrides": []
-      },
-      "gridPos": {
-        "h": 8,
-        "w": 12,
-        "x": 6,
-        "y": 17
-      },
-      "id": 6,
-      "options": {
-        "legend": {
-          "calcs": [],
-          "displayMode": "list",
-          "placement": "bottom",
-          "showLegend": true
-        },
-        "tooltip": {
-          "mode": "single",
-          "sort": "none"
-        }
-      },
-      "targets": [
-        {
-          "datasource": {
-            "type": "influxdb",
-            "uid": "influxdb"
-          },
-          "query": "from(bucket: \"airquality_monitoring\")\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\n  |> filter(fn: (r) => r[\"_measurement\"] == \"airquality_monitoring\")\n  |> filter(fn: (r) => r[\"_field\"] == \"AQI\")\n  |> filter(fn: (r) => r[\"machine\"] == \"${machine}\")\n  |> aggregateWindow(every: v.windowPeriod, fn: last, createEmpty: false)\n  |> yield(name: \"last\")",
-          "refId": "A"
-        }
-      ],
-      "title": "AQI History",
-      "type": "timeseries"
     }
   ],
   "refresh": "5s",
@@ -573,6 +577,6 @@
   "timezone": "",
   "title": "Air Quality Monitoring",
   "uid": "0QKtTznSk",
-  "version": 3,
+  "version": 2,
   "weekStart": ""
 }
