@@ -16,16 +16,16 @@ class ADC: # as required by measure.py
     Tb, P = bmp280_wrapper.get_TP()
     
     data = Data()    
-    data.temperature = Ts
+    data.temperature = Ts   # Use temperature reading from the SHT40 
     data.humidity = RH
     data.pressure = P
     return data
 
-  class Data:
-    pass
+class Data:
+  pass
 
 if __name__ == '__main__':
-  import time
+  from time import sleep
   sensor = ADC()
   while True:
     sampledata = sensor.sample()
@@ -33,4 +33,4 @@ if __name__ == '__main__':
     print("RH:", sampledata.humidity, "%")
     print("P:", sampledata.pressure, "%")
     print()
-    time.sleep(1)
+    sleep(1)
