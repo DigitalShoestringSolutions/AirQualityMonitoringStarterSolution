@@ -3,6 +3,8 @@
 
 # Future features: heater, cropping of RH values, validating checksum, calibration...
 
+# Public API: only the get_TRH() function
+
 # imports
 from smbus2 import SMBus, i2c_msg
 from time import sleep
@@ -26,8 +28,11 @@ def _read():
 
     # Post process data
     read_bytes = list(msg)
-    S_T = (read_bytes[1] << 8) | (read_bytes[0])
-    S_RH = (read_bytes[4] << 8) | (read_bytes[3])
+    # Checksums could be validated here. For now this can be done manually with a tool such as:
+    # http://www.sunshine2k.de/coding/javascript/crc/crc_js.html and the custom settings on page 9 of 
+    # https://m5stack.oss-cn-shenzhen.aliyuncs.com/resource/docs/products/unit/ENV%E2%85%A3%20Unit/SHT40.pdf
+    S_T = (read_bytes[0] << 8) | (read_bytes[1])
+    S_RH = (read_bytes[3] << 8) | (read_bytes[4])
 
   return S_T, S_RH
 
@@ -43,21 +48,15 @@ def _calculate_relativehumidity(S_RH):
 
 def get_TRH():
   readings = _read()
-  T = _calculate_temperature(readings[0])       # degC
-  RH = _calculate_relativehumidity(readings[1]) # %
+  T = round(_calculate_temperature(readings[0]), 3)       # degC
+  RH = round(_calculate_relativehumidity(readings[1]), 3) # %
   return T, RH
 
 if __name__ == '__main__':
   import time
   while True:
     TRH = get_TRH()
-    print("T:", TRH[0], "degC")
+    print("T: ", TRH[0], "degC")
     print("RH:", TRH[1], "%")
     print()
     time.sleep(1)
-
-# The data this produces is pants. T & RH shooting +-100. 
-# I've manually validated a few checksums (using http://www.sunshine2k.de/coding/javascript/crc/crc_js.html and the custom settings on page 9 of https://m5stack.oss-cn-shenzhen.aliyuncs.com/resource/docs/products/unit/ENV%E2%85%A3%20Unit/SHT40.pdf)
-# They're all fine.
-# The sensirion code is a bit heavy - multiple pip packages - for what should be a very straightforward read. 
-# I'd like to fix this. 
