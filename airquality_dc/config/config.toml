@@ -10,9 +10,6 @@
     sample_count = 5
     sample_interval = 0.2
 
-[calculation]
-   
-
 [computing]
 	hardware="Pi4"
 	#hardware="Rock4C+"
