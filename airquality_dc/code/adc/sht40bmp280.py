@@ -14,9 +14,9 @@ class ADC: # as required by measure.py
 
     Ts, RH = sht40.get_TRH()
     Tb, P = bmp280_wrapper.get_TP()
-    
-    data = Data()    
-    data.temperature = Ts   # Use temperature reading from the SHT40 
+
+    data = Data()
+    data.temperature = Ts   # Use temperature reading from the SHT40
     data.humidity = RH
     data.pressure = P
     return data
@@ -31,6 +31,6 @@ if __name__ == '__main__':
     sampledata = sensor.sample()
     print("T:", sampledata.temperature, "degC")
     print("RH:", sampledata.humidity, "%")
-    print("P:", sampledata.pressure, "%")
+    print("P:", sampledata.pressure, "hPa")
     print()
     sleep(1)
